@@ -13,8 +13,6 @@ function load(value) {
         } else {
             value = ""
         }
-    }else if(value.){
-        value = value
     }
     return value
 }
