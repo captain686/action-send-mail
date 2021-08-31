@@ -35,7 +35,6 @@ function getBody(bodyOrFile, convertMarkdown) {
         const converter = new showdown.Converter()
         body = converter.makeHtml(body)
     }
-
     return body
 }
 
@@ -76,7 +75,12 @@ async function main() {
         if (!username || !password) {
             core.warning("Username and password not specified. You should only do this if you are using a self-hosted runner to access an on-premise mail server.")
         }
-
+        
+        content = load(body)
+        if (content == "") {
+            return
+        }
+        
         const transport = nodemailer.createTransport({
             host: serverAddress,
             auth: username && password ? {
