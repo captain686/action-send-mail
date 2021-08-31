@@ -13,6 +13,8 @@ function load(value) {
         } else {
             value = ""
         }
+    }else if(value.){
+        value = value
     }
     return value
 }
@@ -23,7 +25,11 @@ function getBody(bodyOrFile, convertMarkdown) {
     // Read body from file
     if (bodyOrFile.startsWith("file://")) {
         const file = bodyOrFile.replace("file://", "")
-        body = fs.readFileSync(file, "utf8")
+        if(fs.existsSync(file)) {
+            body = fs.readFileSync(file, "utf8")
+        }else{
+            return
+        }
     }
 
     // Convert Markdown to HTML
