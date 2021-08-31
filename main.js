@@ -4,6 +4,19 @@ const glob = require("@actions/glob")
 const fs = require("fs")
 const showdown = require("showdown")
 
+
+function load(value) {
+    if (value.startsWith("file://")) {
+        const filepath = value.replace("file://", "")
+        if(fs.existsSync(filepath)) {
+            value = fs.readFileSync(filepath, "utf8")
+        } else {
+            value = ""
+        }
+    }
+    return value
+}
+
 function getBody(bodyOrFile, convertMarkdown) {
     let body = bodyOrFile
 
@@ -75,7 +88,7 @@ async function main() {
 
         const info = await transport.sendMail({
             from: getFrom(from, username),
-            to: to,
+            to: load(to),
             subject: subject,
             cc: cc ? cc : undefined,
             bcc: bcc ? bcc : undefined,
